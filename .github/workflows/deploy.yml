@@ -34,7 +34,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         # if: github.ref == 'refs/heads/main'
         with:
-          personal_token: ${{ secrets.KAMAFIRST }}
+          personal_token: ${{ secrets.KAMASECOND }}
           # github_token: ${{ secrets.KAMAFIRST }}
           # deploy_key: ${{ secrets.KAMAFIRST }}
           external_repository: carma-demo/topic-hochwasser
