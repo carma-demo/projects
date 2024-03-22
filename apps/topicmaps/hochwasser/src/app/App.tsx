@@ -6,7 +6,7 @@ export function App() {
     <div>
       <h1>
         <span> Hello there, </span>
-        Welcome hochwasser 👋
+        Welcome hochwasser demo 👋
       </h1>
     </div>
   );
