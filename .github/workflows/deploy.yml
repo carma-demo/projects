@@ -38,4 +38,4 @@ jobs:
           # github_token: ${{ secrets.KAMAFIRST }}
           # deploy_key: ${{ secrets.KAMAFIRST }}
           external_repository: carma-demo/topic-hochwasser
-          publish_dir: ./dist
+          publish_dir: ./dist/apps/topicmaps/hochwasser
