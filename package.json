@@ -2,6 +2,7 @@
   "name": "@carma/source",
   "version": "0.1.0",
   "license": "MIT",
+  "homepage": "https://carma-demo.github.io/topic-hochwasser/",
   "scripts": {},
   "private": true,
   "dependencies": {
