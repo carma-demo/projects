@@ -24,10 +24,8 @@ jobs:
         run: npm install
       - name: Read Project Config
         run: cat projects-config.json
-      - name: Run NX Build
-        run: |
-          PROJECT_NAME=$(echo $NX_INVOKED_TARGETS | cut -d':' -f1)
-                    echo "Building project: $PROJECT_NAME"
+      - name: Show print
+        run: npx nx print-affected --base=HEAD~1
       - name: List current folder
         run: ls -la
       - name: Build app
