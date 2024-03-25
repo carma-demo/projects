@@ -32,7 +32,7 @@ jobs:
         run: ls -la
       - name: Show print
         run:
-          npx nx show projects ---affected --base=main
+          npx nx show projects ---affected:build --base=main
 
           #     Check for config file
   #    If no config file is here  cancel deployment.
