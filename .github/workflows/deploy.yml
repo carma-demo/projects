@@ -23,10 +23,10 @@ jobs:
       # Check for config file
       # If no config file is here  cancel deployment.
       # If there is a config file read the variables and save it to yml variables
-      # - name: Install
-      #   run: npm install
-      # - name: List current folder
-      #   run: ls -la
+      - name: Install
+        run: npm install
+      - name: List current folder
+        run: ls -la
       - name: Build app
         id: build-app
         run: |
