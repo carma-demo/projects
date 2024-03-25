@@ -55,6 +55,8 @@ jobs:
               echo "hochwasser true"
               repo_link=$(jq -r '.projects.hochwasser.repo_link' projects-config.json)
               project_path=$(jq -r '.projects.hochwasser.project_path' projects-config.json)
+              echo "repo_link: $repo_link"
+              echo "project_path: $project_path"
               echo "::set-output name=deploy_required::true"
             fi
           done
