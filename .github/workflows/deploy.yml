@@ -35,6 +35,7 @@ jobs:
       - run: |
           echo "BASE: ${{ steps.setSHAs.outputs.base }}"
           echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
+          git branch --track main origin/main
           npx nx affected -t build
       # - name: Install
       #   run: npm install
