@@ -30,11 +30,17 @@ jobs:
         run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
       - name: List current folder
         run: ls -la
-      - name: Show print
-        run:
-          npx nx show projects ---affected:build --base=main
+      - name: Get Affected Projects
+        id: get_affected_projects
+        run: echo "::set-output name=projects::$(npx nx show projects --affected --base=main)"
 
-          #     Check for config file
+      - name: Print Affected Projects
+        run: |
+          affected_projects="${{ steps.get_affected_projects.outputs.projects }}"
+          echo "Affected Projects:"
+          echo "$affected_projects"
+
+  #     Check for config file
   #    If no config file is here  cancel deployment.
   #   If there is a config file read the variables and save it to yml variables
 
