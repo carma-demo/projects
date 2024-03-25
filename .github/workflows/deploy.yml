@@ -32,7 +32,10 @@ jobs:
         run: ls -la
       - name: Get Affected Projects
         id: get_affected_projects
-        run: echo "::set-output name=projects::$(npx nx show projects --affected --base=main)"
+        run: |
+          affected_projects=$(npx nx show projects --affected --base=main)
+          projects_list=$(echo "$affected_projects" | awk '{print "\""$1"\""}' | paste -sd "," -)
+          echo "::set-output name=projects::$projects_list"
 
       - name: Print Affected Projects
         run: |
