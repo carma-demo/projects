@@ -28,7 +28,7 @@ jobs:
       # - name: Build app
       #   run: npx nx build hochwasser
       - name: Build app
-        run: npx nx affected -t build --base=main
+        run: npx nx affected -t build --base=main --projects=hochwasser,e-auto-ladestation
       - name: List current folder
         run: ls -la
       # For each affected project
