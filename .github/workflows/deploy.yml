@@ -57,8 +57,8 @@ jobs:
               projectPath=$(jq -r '.projects.hochwasser.projectPath' projects-config.json)
               echo "repo_link: $repoLink"
               echo "project_path: $projectPath"
-              echo "::set-env name=REPO_LINK::$repoLink"
-              echo "::set-env name=PROJECT_PATH::$projectPath"
+              echo "REPO_LINK=$repoLink" >> $GITHUB_ENV
+              echo "PROJECT_PATH=$projectPath" >> $GITHUB_ENV
               echo "::set-output name=deploy_required::true"
             fi
           done
