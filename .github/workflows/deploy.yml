@@ -23,14 +23,19 @@ jobs:
       # Check for config file
       # If no config file is here  cancel deployment.
       # If there is a config file read the variables and save it to yml variables
-      - name: Install
-        run: npm install
-      - name: List current folder
-        run: ls -la
+      # - name: Install
+      #   run: npm install
+      # - name: List current folder
+      #   run: ls -la
       - name: Build app
-        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
-      - name: List current folder
-        run: ls -la
+        id: build-app
+        run: |
+          npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
+          echo "::set-output name=build-output::$(npx nx affected:libs --plain)"
+      - name: Get build output
+        run: |
+          echo "Build output:"
+          echo "${{ steps.build-app.outputs.build-output }}"
 
       # - name: Deploy B
       #   uses: peaceiris/actions-gh-pages@v3
