@@ -24,16 +24,17 @@ jobs:
         run: npm install
       - name: Read Project Config
         run: cat projects-config.json
-      - name: List current folder
       - name: Run NX Build
         run: |
           PROJECT_NAME=$(echo $NX_INVOKED_TARGETS | cut -d':' -f1)
                     echo "Building project: $PROJECT_NAME"
+      - name: List current folder
         run: ls -la
       - name: Build app
         run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
       - name: List current folder
-        run: ls -la
+        run:
+          ls -la
 
           #     Check for config file
   #    If no config file is here  cancel deployment.
