@@ -33,8 +33,7 @@ jobs:
       - name: Build app
         run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
       - name: List current folder
-        run:
-          ls -la
+        run: ls -la
 
           #     Check for config file
   #    If no config file is here  cancel deployment.
