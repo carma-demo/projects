@@ -19,13 +19,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
       - name: Install
         run: npm install
       - name: Read Project Config
         run: cat projects-config.json
       - name: Show print
-        run: npx nx print-affected --base=HEAD~1
+        run: npx nx show projects ---affected --base=main --head=HEAD
       - name: List current folder
         run: ls -la
       - name: Build app
