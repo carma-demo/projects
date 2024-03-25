@@ -52,8 +52,17 @@ jobs:
           for project in "${projects_array[@]}"; do
             if [ "$project" = "hochwasser" ]; then
               echo "hochwasser true"
+              echo "::set-output name=deploy_required::true"
             fi
           done
+
+      - name: Deploy B
+        if: ${{ steps.get_affected_projects.outputs.deploy_required == 'true' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.KARMA_ORG }}
+          external_repository: carma-demo/topic-hochwasser
+          publish_dir: ./dist/apps/topicmaps/hochwasser
 
   #     Check for config file
   #    If no config file is here  cancel deployment.
