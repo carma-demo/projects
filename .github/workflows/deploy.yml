@@ -20,24 +20,28 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-      Check for config file
-      If no config file is here  cancel deployment.
-      If there is a config file read the variables and save it to yml variables
       - name: Install
         run: npm install
+      - name: Read Project Config
+        run: cat projects-config.json
       - name: List current folder
         run: ls -la
       - name: Build app
-        run:  npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
+        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
       - name: List current folder
-        run: ls -la
+        run:
+          ls -la
 
-      # - name: Deploy B
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   # if: github.ref == 'refs/heads/main'
-      #   with:
-      #     personal_token: ${{ secrets.KARMA_ORG }}
-      #     # github_token: ${{ secrets.KAMAFIRST }}
-      #     # deploy_key: ${{ secrets.KAMAFIRST }}
-      #     external_repository: carma-demo/topic-hochwasser
-      #     publish_dir: ./dist/apps/topicmaps/hochwasser
+          #     Check for config file
+  #    If no config file is here  cancel deployment.
+  #   If there is a config file read the variables and save it to yml variables
+
+  # - name: Deploy B
+  #   uses: peaceiris/actions-gh-pages@v3
+  #   # if: github.ref == 'refs/heads/main'
+  #   with:
+  #     personal_token: ${{ secrets.KARMA_ORG }}
+  #     # github_token: ${{ secrets.KAMAFIRST }}
+  #     # deploy_key: ${{ secrets.KAMAFIRST }}
+  #     external_repository: carma-demo/topic-hochwasser
+  #     publish_dir: ./dist/apps/topicmaps/hochwasser
