@@ -38,8 +38,9 @@ jobs:
       - run: |
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"
-          npx nx show projects --affected -t build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
 
+      - name: Show affected projects
+        run: npx nx show projects --affected -t build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
       - name: List current folder
         run: ls -la
       - name: Build app
