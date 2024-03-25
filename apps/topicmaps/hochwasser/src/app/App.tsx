@@ -4,10 +4,10 @@ import styles from './App.module.css';
 export function App() {
   return (
     <div>
-      <h1>
+      <h2>
         <span> Hello there, </span>
         Welcome to hochwasser👋
-      </h1>
+      </h2>
     </div>
   );
 }
