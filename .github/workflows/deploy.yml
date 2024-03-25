@@ -74,8 +74,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.KARMA_ORG }}
-          external_repository: ${{ steps.check_project.outputs.repoLink }}
-          publish_dir: ${{ steps.check_project.outputs.projectPath }}
+          external_repository: ${{ env.REPO_LINK }}
+          publish_dir: ${{ env.PROJECT_PATH }}
 
   #     Check for config file
   #    If no config file is here  cancel deployment.
