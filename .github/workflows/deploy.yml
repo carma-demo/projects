@@ -53,21 +53,25 @@ jobs:
           for project in "${projects_array[@]}"; do
             if [ "$project" = "hochwasser" ]; then
               echo "hochwasser true"
-              repo_link=$(jq -r '.projects.hochwasser.repo_link' projects-config.json)
-              project_path=$(jq -r '.projects.hochwasser.project_path' projects-config.json)
-              echo "repo_link: $repo_link"
-              echo "project_path: $project_path"
+              repoLink=$(jq -r '.projects.hochwasser.repoLink' projects-config.json)
+              projectPath=$(jq -r '.projects.hochwasser.projectPath' projects-config.json)
+              echo "repo_link: $repoLink"
+              echo "project_path: $projectPath"
               echo "::set-output name=deploy_required::true"
             fi
           done
 
+      - name: Print repoLink and projectPath
+        run: |
+          echo "repoLink: ${{ steps.check_project.outputs.repoLink }}"
+          echo "projectPath: ${{ steps.check_project.outputs.projectPath }}"
       - name: Deploy on condition
         if: ${{ steps.check_project.outputs.deploy_required == 'true' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.KARMA_ORG }}
-          external_repository: ${{ steps.check_project.outputs.repo_link }}
-          publish_dir: ${{ steps.check_project.outputs.project_path }}
+          external_repository: ${{ steps.check_project.outputs.repoLink }}
+          publish_dir: ${{ steps.check_project.outputs.projectPath }}
 
   #     Check for config file
   #    If no config file is here  cancel deployment.
