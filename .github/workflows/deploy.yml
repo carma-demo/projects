@@ -46,7 +46,10 @@ jobs:
       - name: Check for specific project
         run: |
           affected_projects="${{ steps.get_affected_projects.outputs.projects }}"
-          for project in $affected_projects; do
+          affected_projects=${affected_projects#"\""}
+          affected_projects=${affected_projects%"\""}
+          IFS=',' read -ra projects_array <<< "$affected_projects"
+          for project in "${projects_array[@]}"; do
             if [ "$project" = "hochwasser" ]; then
               echo "hochwasser true"
             fi
