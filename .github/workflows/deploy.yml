@@ -19,10 +19,8 @@ jobs:
         with:
           fetch-depth: 0
           # Mark your git directory as safe
-      - name: Set Directory as Safe
-        run: |
-          git config --system --add safe.directory "$GITHUB_WORKSPACE"
-        shell: bash
+      - name: Set Git Config
+        run: git config --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v4
