@@ -43,6 +43,15 @@ jobs:
           echo "Affected Projects:"
           echo "$affected_projects"
 
+      - name: Check for specific project
+        run: |
+          affected_projects="${{ steps.get_affected_projects.outputs.projects }}"
+          for project in $affected_projects; do
+            if [ "$project" = "hochwasser" ]; then
+              echo "hochwasser true"
+            fi
+          done
+
   #     Check for config file
   #    If no config file is here  cancel deployment.
   #   If there is a config file read the variables and save it to yml variables
