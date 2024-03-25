@@ -40,7 +40,12 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: Show affected projects
-        run: npx nx show projects --affected -t build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
+        run: npx nx show projects --affected -t build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --output=json
+        id: show_projects_output
+
+      - name: Print affected projects
+        run: echo "${{ steps.show_projects_output.stdout }}"
+
       - name: List current folder
         run: ls -la
       - name: Build app
