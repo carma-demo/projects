@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        project: [hochwasser, e-auto-ladestation]
+        project: [hochwasser]
 
     permissions:
       contents: read
