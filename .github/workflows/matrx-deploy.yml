@@ -28,13 +28,13 @@ jobs:
       - name: Process deploy steps
         id: process_deploy_steps
         run: |
-          config=$(echo "${{ steps.read_project_config.outputs.config }}")
-          repoLink=$(echo "$config" | jq -r ".projects.${{ matrix.project }}.repoLink")
-          projectPath=$(echo "$config" | jq -r ".projects.${{ matrix.project }}.projectPath")
-          echo "- name: Deploy ${{ matrix.project }}"
+          config=$(cat projects-config.json)
+          repoLink=$(echo "$config" | jq -r '.projects."e-auto-ladestation".repoLink')
+          projectPath=$(echo "$config" | jq -r '.projects."e-auto-ladestation".projectPath')
+          echo "- name: Deploy e-auto-ladestation"
           echo "  uses: peaceiris/actions-gh-pages@v3"
           echo "  with:"
-          echo "    personal_token: ${{ secrets.KARMA_ORG }}"
+          echo "    personal_token: ***"
           echo "    external_repository: $repoLink"
           echo "    publish_dir: $projectPath"
         shell: bash
