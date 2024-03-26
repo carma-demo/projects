@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        project: [hochwasser]
+        project: [hochwasser, e-auto-ladestation]
 
     permissions:
       contents: read
@@ -18,7 +18,7 @@ jobs:
 
     concurrency:
       group: 'pages'
-      cancel-in-progress: true
+      # cancel-in-progress: true
 
     steps:
       - name: Check out code
