@@ -46,4 +46,9 @@ jobs:
           echo "    personal_token: ${{ secrets.KARMA_ORG }}"
           echo "    external_repository: $repoLink"
           echo "    publish_dir: $projectPath"
+
+      - name: Debug Deployment Step
+        run: |
+          echo "DEBUG: repoLink = $repoLink"
+          echo "DEBUG: projectPath = $projectPath"
         shell: bash
