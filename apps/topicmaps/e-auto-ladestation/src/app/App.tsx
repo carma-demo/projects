@@ -6,7 +6,7 @@ export function App() {
     <div>
       <h1>
         <span> Hello there, </span>
-        Welcome e-auto-ladestation affected with nrwl/nx-set-shas@v4 base 2👋
+        Welcome e-auto-ladestation affected with nrwl/nx-set-shas@v4 base node👋
       </h1>
     </div>
   );
