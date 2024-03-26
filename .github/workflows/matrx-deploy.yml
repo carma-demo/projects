@@ -12,10 +12,13 @@ jobs:
         project: [hochwasser, e-auto-ladestation]
 
     permissions:
-      contents: 'write'
-      actions: 'read'
+      contents: read
+      pages: write
+      id-token: write
+
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: 'pages'
+      cancel-in-progress: true
 
     steps:
       - name: Check out code
