@@ -30,8 +30,8 @@ jobs:
         run:
           cat projects-config.json
           # Mark your git directory as safe
-      - name: Set Git Config
-        run: git config --add safe.directory "$GITHUB_WORKSPACE"
+      # - name: Set Git Config
+      #   run: git config --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v4
