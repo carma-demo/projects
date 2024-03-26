@@ -11,6 +11,12 @@ jobs:
       matrix:
         project: [hochwasser, e-auto-ladestation]
 
+    permissions:
+      contents: 'write'
+      actions: 'read'
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
     steps:
       - name: Check out code
         uses: actions/checkout@v2
