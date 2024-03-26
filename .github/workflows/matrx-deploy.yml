@@ -26,13 +26,16 @@ jobs:
 
       - name: Install
         run: npm install
+        shell: bash
 
       - name: Build app
         run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
+        shell: bash
 
       - name: Read project config
         id: read_project_config
         run: echo "::set-output name=config::$(cat projects-config.json)"
+        shell: bash
 
       - name: Process deploy steps
         id: process_deploy_steps
@@ -48,11 +51,13 @@ jobs:
           echo "    personal_token: ${{ secrets.KARMA_ORG }}"
           echo "    external_repository: ${{ env.REPO_LINK }}"
           echo "    publish_dir: ${{ env.PROJECT_PATH }}"
+        shell: bash
 
       - name: Debug Deployment Step
         run: |
           echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
           echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
+        shell: bash
 
       - name: One more deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -60,5 +65,4 @@ jobs:
           personal_token: ${{ secrets.KARMA_ORG }}
           external_repository: ${{ env.REPO_LINK }}
           publish_dir: ${{ env.PROJECT_PATH }}
-
-    shell: bash
+        shell: bash
