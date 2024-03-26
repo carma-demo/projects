@@ -47,11 +47,7 @@ jobs:
           echo "PROJECTS=$affected_projects" >> $GITHUB_ENV
 
       - name: Build affected projects
-        run: |
-          projects=($(echo "$PROJECTS"))
-          for project in "${projects[@]}"; do
-            npx nx run $project --target=build
-          done
+        run: npx nx affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
 
       - name: Read project config
         id: read_project_config
