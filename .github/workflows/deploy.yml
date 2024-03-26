@@ -94,7 +94,7 @@ jobs:
         run: source env.properties || true
 
       - name: Deploy on condition
-        if: ${{ steps.check_project.outputs.deploy_required == 'true' }}
+        # if: ${{ steps.check_project.outputs.deploy_required == 'true' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.KARMA_ORG }}
