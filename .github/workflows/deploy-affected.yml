@@ -44,8 +44,7 @@ jobs:
       - name: Set affected projects
         run: |
           affected_projects="${{ steps.affected_projects.outputs.projects }}"
-          echo "::set-env name=PROJECTS::$affected_projects"
-        shell: bash
+          echo "PROJECTS=$affected_projects" >> $GITHUB_ENV
 
       - name: Build affected projects
         run: |
