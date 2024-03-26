@@ -49,7 +49,6 @@ jobs:
           echo "    external_repository: ${{ env.REPO_LINK }}"
           echo "    publish_dir: ${{ env.PROJECT_PATH }}"
 
-      
       - name: Debug Deployment Step
         run: |
           echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
@@ -61,5 +60,5 @@ jobs:
           personal_token: ${{ secrets.KARMA_ORG }}
           external_repository: ${{ env.REPO_LINK }}
           publish_dir: ${{ env.PROJECT_PATH }}
-      
-      shell: bash
+
+    shell: bash
