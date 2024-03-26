@@ -49,7 +49,6 @@ jobs:
           echo "    external_repository: ${{ env.REPO_LINK }}"
           echo "    publish_dir: ${{ env.PROJECT_PATH }}"
 
-      shell: bash
       
       - name: Debug Deployment Step
         run: |
@@ -63,3 +62,4 @@ jobs:
           external_repository: ${{ env.REPO_LINK }}
           publish_dir: ${{ env.PROJECT_PATH }}
       
+      shell: bash
