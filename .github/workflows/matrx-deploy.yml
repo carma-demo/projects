@@ -49,8 +49,17 @@ jobs:
           echo "    external_repository: ${{ env.REPO_LINK }}"
           echo "    publish_dir: ${{ env.PROJECT_PATH }}"
 
+      shell: bash
+      
       - name: Debug Deployment Step
         run: |
           echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
           echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
-        shell: bash
+
+      - name: One more deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.KARMA_ORG }}
+          external_repository: ${{ env.REPO_LINK }}
+          publish_dir: ${{ env.PROJECT_PATH }}
+      
