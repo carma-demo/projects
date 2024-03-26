@@ -29,9 +29,9 @@ jobs:
         id: process_deploy_steps
         run: |
           config=$(cat projects-config.json)
-          repoLink=$(echo "$config" | jq -r '.projects."e-auto-ladestation".repoLink')
-          projectPath=$(echo "$config" | jq -r '.projects."e-auto-ladestation".projectPath')
-          echo "- name: Deploy e-auto-ladestation"
+          repoLink=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].repoLink')
+          projectPath=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].projectPath')
+          echo "- name: Deploy ${{ matrix.project }}"
           echo "  uses: peaceiris/actions-gh-pages@v3"
           echo "  with:"
           echo "    personal_token: ***"
