@@ -25,6 +25,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
       - name: Install
         run: npm install
         shell: bash
@@ -32,10 +37,6 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: setSHAs
         uses: nrwl/nx-set-shas@v4
-
-      - run: |
-          echo "BASE: ${{ steps.setSHAs.outputs.base }}"
-          echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
 
       - name: Run nx command with affected projects
         id: affected_projects
