@@ -1,0 +1,68 @@
+name: Deploy Affected
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project: [hochwasser, e-auto-ladestation]
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: 'pages'
+      # cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install
+        run: npm install
+        shell: bash
+
+      - name: Build app
+        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
+        shell: bash
+
+      - name: Read project config
+        id: read_project_config
+        run: echo "::set-output name=config::$(cat projects-config.json)"
+        shell: bash
+
+      - name: Process deploy steps
+        id: process_deploy_steps
+        run: |
+          config=$(cat projects-config.json)
+          repoLink=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].repoLink')
+          projectPath=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].projectPath')
+          echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
+          echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
+          echo "- name: Deploy ${{ matrix.project }}"
+          echo "  uses: peaceiris/actions-gh-pages@v3"
+          echo "  with:"
+          echo "    personal_token: ${{ secrets.KARMA_ORG }}"
+          echo "    external_repository: ${{ env.REPO_LINK }}"
+          echo "    publish_dir: ${{ env.PROJECT_PATH }}"
+        shell: bash
+
+      - name: Debug Deployment Step
+        run: |
+          echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
+          echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
+        shell: bash
+
+      - name: One more deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.KARMA_ORG }}
+          external_repository: ${{ env.REPO_LINK }}
+          publish_dir: ${{ env.PROJECT_PATH }}
