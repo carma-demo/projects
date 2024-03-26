@@ -1,9 +1,6 @@
 name: GitHub Pages
 
 on:
-  # push:
-  #   branches:
-  #     - main
   workflow_dispatch:
 
 jobs:
@@ -24,14 +21,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
       - name: Install
         run: npm install
+
       - name: Read Project Config
-        run:
-          cat projects-config.json
-          # Mark your git directory as safe
-      # - name: Set Git Config
-      #   run: git config --add safe.directory "$GITHUB_WORKSPACE"
+        run: cat projects-config.json
+
+      - name: Set Git Config
+        run: git config --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v4
@@ -44,15 +42,15 @@ jobs:
         run: npx nx show projects --affected -t build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --output=json
         id: show_projects_output
 
-      - name: Print affected projects
-        run: echo "${{ steps.show_projects_output.stdout }}"
+      - name: List current folder
+        run: ls -la
+
+      - name: Build app
+        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
 
       - name: List current folder
         run: ls -la
-      - name: Build app
-        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
-      - name: List current folder
-        run: ls -la
+
       - name: Get Affected Projects
         id: get_affected_projects
         run: |
@@ -78,10 +76,8 @@ jobs:
               echo "hochwasser true"
               repoLink=$(jq -r '.projects.hochwasser.repoLink' projects-config.json)
               projectPath=$(jq -r '.projects.hochwasser.projectPath' projects-config.json)
-              echo "repo_link: $repoLink"
-              echo "project_path: $projectPath"
-              echo "REPO_LINK=$repoLink" >> $GITHUB_ENV
-              echo "PROJECT_PATH=$projectPath" >> $GITHUB_ENV
+              echo "REPO_LINK=$repoLink" > env.properties
+              echo "PROJECT_PATH=$projectPath" >> env.properties
               echo "::set-output name=deploy_required::true"
             fi
           done
@@ -93,9 +89,9 @@ jobs:
           echo "repoLink: ${{ env.REPO_LINK }}"
           echo "projectPath: ${{ env.PROJECT_PATH }}"
         shell: bash
-        env:
-          REPO_LINK: ${{ steps.check_project.outputs.repoLink }}
-          PROJECT_PATH: ${{ steps.check_project.outputs.projectPath }}
+
+      - name: Load environment variables
+        run: source env.properties
 
       - name: Deploy on condition
         if: ${{ steps.check_project.outputs.deploy_required == 'true' }}
@@ -104,7 +100,6 @@ jobs:
           personal_token: ${{ secrets.KARMA_ORG }}
           external_repository: ${{ env.REPO_LINK }}
           publish_dir: ${{ env.PROJECT_PATH }}
-
   #     Check for config file
   #    If no config file is here  cancel deployment.
   #   If there is a config file read the variables and save it to yml variables
