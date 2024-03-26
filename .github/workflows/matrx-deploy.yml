@@ -65,4 +65,3 @@ jobs:
           personal_token: ${{ secrets.KARMA_ORG }}
           external_repository: ${{ env.REPO_LINK }}
           publish_dir: ${{ env.PROJECT_PATH }}
-        shell: bash
