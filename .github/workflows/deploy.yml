@@ -92,6 +92,11 @@ jobs:
           echo "projectPath: ${{ steps.check_project.outputs.projectPath }}"
           echo "repoLink: ${{ env.REPO_LINK }}"
           echo "projectPath: ${{ env.PROJECT_PATH }}"
+        shell: bash
+        env:
+          REPO_LINK: ${{ steps.check_project.outputs.repoLink }}
+          PROJECT_PATH: ${{ steps.check_project.outputs.projectPath }}
+
       - name: Deploy on condition
         if: ${{ steps.check_project.outputs.deploy_required == 'true' }}
         uses: peaceiris/actions-gh-pages@v3
