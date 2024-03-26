@@ -4,11 +4,10 @@ import styles from './App.module.css';
 export function App() {
   return (
     <div>
-      <h1>
+      <h2>
         <span> Hello there, </span>
-        <span> Hello there, </span>
-        Welcome to advance deploy of hochwasser👋
-      </h1>
+        Welcome to hochwasser manual deployment👋
+      </h2>
     </div>
   );
 }

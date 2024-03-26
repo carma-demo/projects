@@ -3,6 +3,10 @@
     "hochwasser": {
       "repoLink": "carma-demo/topic-hochwasser",
       "projectPath": "./dist/apps/topicmaps/hochwasser"
+    },
+    "e-auto-ladestation": {
+      "repoLink": "carma-demo/topic-e-auto-ladestation",
+      "projectPath": "./dist/apps/topicmaps/e-auto-ladestation"
     }
   }
 }
