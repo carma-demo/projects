@@ -91,7 +91,7 @@ jobs:
         shell: bash
 
       - name: Load environment variables
-        run: source env.properties
+        run: source env.properties || true
 
       - name: Deploy on condition
         if: ${{ steps.check_project.outputs.deploy_required == 'true' }}
@@ -100,16 +100,3 @@ jobs:
           personal_token: ${{ secrets.KARMA_ORG }}
           external_repository: ${{ env.REPO_LINK }}
           publish_dir: ${{ env.PROJECT_PATH }}
-  #     Check for config file
-  #    If no config file is here  cancel deployment.
-  #   If there is a config file read the variables and save it to yml variables
-
-  # - name: Deploy B
-  #   uses: peaceiris/actions-gh-pages@v3
-  #   # if: github.ref == 'refs/heads/main'
-  #   with:
-  #     personal_token: ${{ secrets.KARMA_ORG }}
-  #     # github_token: ${{ secrets.KAMAFIRST }}
-  #     # deploy_key: ${{ secrets.KAMAFIRST }}
-  #     external_repository: carma-demo/topic-hochwasser
-  #     publish_dir: ./dist/apps/topicmaps/hochwasser
