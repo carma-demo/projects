@@ -9,8 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        project: [hochwasser, e-auto-ladestation, test]
-        # project: [npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}]
+        project: [test]
 
     permissions:
       contents: read
@@ -26,51 +25,64 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
         run: npm install
-        shell: bash
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: setSHAs
         uses: nrwl/nx-set-shas@v4
 
-      - run: |
-          echo "BASE: ${{ steps.setSHAs.outputs.base }}"
-          echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
-
       - name: Run nx command with affected projects
-        run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+        id: affected_projects
+        run: |
+          affected=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})
+          echo "::set-output name=projects::$affected"
 
-      - name: Build app
-        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
-        shell: bash
+      - name: Set affected projects
+        run: |
+          affected_projects="${{ steps.affected_projects.outputs.projects }}"
+          projects_array=($(echo "$affected_projects" | jq -r '.[]'))
+          for project in "${projects_array[@]}"; do
+            echo "::set-env name=PROJECTS::$project"
+          done
+
+      - name: Build affected projects
+        run: |
+          projects=($(echo "$PROJECTS"))
+          for project in "${projects[@]}"; do
+            npx nx run $project --target=build
+          done
 
       - name: Read project config
         id: read_project_config
         run: echo "::set-output name=config::$(cat projects-config.json)"
-        shell: bash
 
       - name: Process deploy steps
         id: process_deploy_steps
         run: |
           config=$(cat projects-config.json)
-          repoLink=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].repoLink')
-          projectPath=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].projectPath')
-          echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
-          echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
-          echo "- name: Deploy ${{ matrix.project }}"
-          echo "  uses: peaceiris/actions-gh-pages@v3"
-          echo "  with:"
-          echo "    personal_token: ${{ secrets.KARMA_ORG }}"
-          echo "    external_repository: ${{ env.REPO_LINK }}"
-          echo "    publish_dir: ${{ env.PROJECT_PATH }}"
-        shell: bash
+          for project in "${projects[@]}"; do
+            repoLink=$(echo "$config" | jq -r ".projects[\"$project\"].repoLink")
+            projectPath=$(echo "$config" | jq -r ".projects[\"$project\"].projectPath")
+            echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
+            echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
+            echo "- name: Deploy $project"
+            echo "  uses: peaceiris/actions-gh-pages@v3"
+            echo "  with:"
+            echo "    personal_token: ${{ secrets.KARMA_ORG }}"
+            echo "    external_repository: ${{ env.REPO_LINK }}"
+            echo "    publish_dir: ${{ env.PROJECT_PATH }}"
+          done
 
       - name: Debug Deployment Step
         run: |
           echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
           echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
-        shell: bash
 
       - name: One more deploy
         uses: peaceiris/actions-gh-pages@v3
