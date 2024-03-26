@@ -29,6 +29,14 @@ jobs:
         run: npm install
         shell: bash
 
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: setSHAs
+        uses: nrwl/nx-set-shas@v4
+
+      - run: |
+          echo "BASE: ${{ steps.setSHAs.outputs.base }}"
+          echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
+
       - name: Build app
         run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
         shell: bash
