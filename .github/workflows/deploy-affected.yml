@@ -37,6 +37,9 @@ jobs:
           echo "BASE: ${{ steps.setSHAs.outputs.base }}"
           echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
 
+      - name: Run nx command with affected projects
+        run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+
       - name: Build app
         run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
         shell: bash
