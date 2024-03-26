@@ -1,0 +1,40 @@
+name: Manual Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project: [hochwasser, e-auto-ladestation]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install
+        run: npm install
+
+      - name: Build app
+        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
+
+      - name: Read project config
+        id: read_project_config
+        run: echo "::set-output name=config::$(cat projects-config.json)"
+
+      - name: Process deploy steps
+        id: process_deploy_steps
+        run: |
+          config=$(echo "${{ steps.read_project_config.outputs.config }}")
+          repoLink=$(echo "$config" | jq -r ".projects.${{ matrix.project }}.repoLink")
+          projectPath=$(echo "$config" | jq -r ".projects.${{ matrix.project }}.projectPath")
+          echo "- name: Deploy ${{ matrix.project }}"
+          echo "  uses: peaceiris/actions-gh-pages@v3"
+          echo "  with:"
+          echo "    personal_token: ${{ secrets.KARMA_ORG }}"
+          echo "    external_repository: $repoLink"
+          echo "    publish_dir: $projectPath"
+        shell: bash
