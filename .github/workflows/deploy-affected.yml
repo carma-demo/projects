@@ -44,10 +44,8 @@ jobs:
       - name: Set affected projects
         run: |
           affected_projects="${{ steps.affected_projects.outputs.projects }}"
-          projects_array=($(echo "$affected_projects" | jq -r '.[]'))
-          for project in "${projects_array[@]}"; do
-            echo "::set-env name=PROJECTS::$project"
-          done
+          echo "::set-env name=PROJECTS::$affected_projects"
+        shell: bash
 
       - name: Build affected projects
         run: |
