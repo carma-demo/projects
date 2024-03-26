@@ -40,15 +40,17 @@ jobs:
           config=$(cat projects-config.json)
           repoLink=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].repoLink')
           projectPath=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].projectPath')
+          echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
+          echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
           echo "- name: Deploy ${{ matrix.project }}"
           echo "  uses: peaceiris/actions-gh-pages@v3"
           echo "  with:"
           echo "    personal_token: ${{ secrets.KARMA_ORG }}"
-          echo "    external_repository: $repoLink"
-          echo "    publish_dir: $projectPath"
+          echo "    external_repository: ${{ env.REPO_LINK }}"
+          echo "    publish_dir: ${{ env.PROJECT_PATH }}"
 
       - name: Debug Deployment Step
         run: |
-          echo "DEBUG: repoLink = $repoLink"
-          echo "DEBUG: projectPath = $projectPath"
+          echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
+          echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
         shell: bash
