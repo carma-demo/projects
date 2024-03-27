@@ -30,17 +30,42 @@ jobs:
       #       echo "::set-output name=project_list::$project"
       #     done
 
+      # - name: Set up matrix
+      #   id: set_up_matrix
+      #   run: |
+      #     # Split the comma-separated string into an array
+      #     IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
+
+      #     # Create a JSON array
+      #     json_array="["
+      #     for project in "${projects[@]}"
+      #     do
+      #       json_array+="\"$project\","
+      #     done
+      #     # Remove the trailing comma
+      #     json_array="${json_array%,}"
+      #     json_array+="]"
+
+      #     # Set output with the JSON array
+      #     echo "::set-output name=project_list::$json_array"
+
       - name: Set up matrix
         id: set_up_matrix
         run: |
           # Split the comma-separated string into an array
           IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
 
-          # Create a JSON array
+          # Create a JSON array with each word as a separate element
           json_array="["
           for project in "${projects[@]}"
           do
-            json_array+="\"$project\","
+            # Split each project into words
+            read -ra words <<< "$project"
+            # Add each word as a separate element in the JSON array
+            for word in "${words[@]}"
+            do
+              json_array+="\"$word\","
+            done
           done
           # Remove the trailing comma
           json_array="${json_array%,}"
