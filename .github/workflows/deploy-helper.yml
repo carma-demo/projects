@@ -43,11 +43,9 @@ jobs:
           SELECTED_COLOR: ${{ steps.selectesed_colors.outputs.SELECTED_COLOR }}
         run: echo "The selected color is $SELECTED_COLOR"
 
-        - name: Only run
+      - name: Only run
         run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
 
       - name: Run nx command to show affected projects
         id: affected_projects
         run: echo "AFFECTED_PROJECTS=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})" >> "$GITHUB_OUTPUT"
-
-      
