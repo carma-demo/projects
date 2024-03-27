@@ -53,7 +53,7 @@ jobs:
         id: set_up_matrix
         run: |
           # Split the comma-separated string into an array
-          IFS=$'\n' read -r -a projects <<< "e-auto-ladestation
+          IFS=$'\n\t' read -r -a projects <<< "e-auto-ladestation
           hochwasser"
 
           # Create a JSON array
