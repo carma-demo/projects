@@ -14,6 +14,10 @@ jobs:
         project: [test]
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
 
@@ -24,27 +28,32 @@ jobs:
         id: setSHAs
         uses: nrwl/nx-set-shas@v4
 
+      # - name: Run nx command with affected projects
+      #   id: affected_projects
+      #   run: |
+      #   npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+      #   echo "env_token=production" >> $GITHUB_OUTPUT
+
+      - name: Run color
+        id: selectesed_colors
+        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.selectesed_colors.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
+
+      - name: Only run
+        run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+
       - name: Run nx command to show affected projects
         uses: gh640/command-result-action@v1
         with:
           command: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
         id: myaction
 
-      - name: Use output in subsequent steps
-        run: |
-          echo "Exit code: ${{ steps.myaction.outputs.exitCode }}"
-          echo "Standard output: ${{ steps.myaction.outputs.stdout }}"
-          echo "Standard error: ${{ steps.myaction.outputs.stderr }}"
-
-      # - name: Add values to project matrix
-      #   run: |
-      #     values=$(echo "${{ steps.myaction.outputs.stdout }}")
-      #     IFS=$'\n' read -rd '' -a array <<<"$values"
-      #     projects="[ 'test', ${array[*]} ]"
-      #     echo "::set-env name=PROJECTS::${projects}"
-
-      # - name: Get nx command
-      #   run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
+      - name: Get nx command
+        run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
 
       # - name: Run nx command to show affected projects
       #   id: affected_projects
