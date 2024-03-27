@@ -20,72 +20,72 @@ jobs:
       - name: Show last commit
         run: echo "The last commit is ${{ github.event.head_commit.message }}"
 
-      # - name: Set up matrix
-      #   id: set_up_matrix
-      #   run: |
-      #     # Split the comma-separated string into an array
-      #     IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
+      - name: Set up matrix
+        id: set_up_matrix
+        run: |
+          # Split the comma-separated string into an array
+          IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
 
-      #     # Print each element of the array
-      #     for project in "${projects[@]}"
-      #     do
-      #       echo "::set-output name=project_list::$project"
-      #     done
-
-      # - name: Set up matrix
-      #   id: set_up_matrix
-      #   run: |
-      #     # Split the comma-separated string into an array
-      #     IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
-
-      #     # Create a JSON array
-      #     json_array="["
-      #     for project in "${projects[@]}"
-      #     do
-      #       json_array+="\"$project\","
-      #     done
-      #     # Remove the trailing comma
-      #     json_array="${json_array%,}"
-      #     json_array+="]"
-
-      #     # Set output with the JSON array
-      #     echo "::set-output name=project_list::$json_array"
-
-      - name: Set text mock
-        id: mocked_text
-        run: echo "SELECTED_COLOR=e-auto-ladestation
-          hochwasser" >> "$GITHUB_OUTPUT"
+          # Print each element of the array
+          for project in "${projects[@]}"
+          do
+            echo "::set-output name=project_list::$project"
+          done
 
       - name: Set up matrix
         id: set_up_matrix
         run: |
-          projects="e-auto-ladestation
-          hochwasser"
+          # Split the comma-separated string into an array
+          IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
 
-          projects=$(perl -pe 's/^\s+//g' <<< "$projects")
-
-          IFS=$'\n' read -r -a projects_array <<< "$projects"
-
+          # Create a JSON array
           json_array="["
-          for project in "${projects_array[@]}"
+          for project in "${projects[@]}"
           do
             json_array+="\"$project\","
           done
+          # Remove the trailing comma
           json_array="${json_array%,}"
           json_array+="]"
 
+          # Set output with the JSON array
           echo "::set-output name=project_list::$json_array"
 
-      - name: Show project list
-        run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
+      # - name: Set text mock
+      #   id: mocked_text
+      #   run: echo "SELECTED_COLOR=e-auto-ladestation
+      #     hochwasser" >> "$GITHUB_OUTPUT"
 
-  # build:
-  #   needs: split_nx_projects
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
+      # - name: Set up matrix
+      #   id: set_up_matrix
+      #   run: |
+      #     projects="e-auto-ladestation
+      #     hochwasser"
 
-  #   steps:
-  #     - name: Build ${{ matrix.project }}
-  #       run: echo "Building ${{ matrix.project }}..."
+      #     projects=$(perl -pe 's/^\s+//g' <<< "$projects")
+
+      #     IFS=$'\n' read -r -a projects_array <<< "$projects"
+
+      #     json_array="["
+      #     for project in "${projects_array[@]}"
+      #     do
+      #       json_array+="\"$project\","
+      #     done
+      #     json_array="${json_array%,}"
+      #     json_array+="]"
+
+      #     echo "::set-output name=project_list::$json_array"
+
+      # - name: Show project list
+      #   run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
+
+  build:
+    needs: split_nx_projects
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
+
+    steps:
+      - name: Build ${{ matrix.project }}
+        run: echo "Building ${{ matrix.project }}..."
