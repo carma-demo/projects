@@ -13,7 +13,6 @@ jobs:
       matrix:
         project:
           - test
-        stdout: ["${{ steps.myaction.outputs.stdout }}"]
 
     steps:
       - name: Setup Node.js
@@ -38,12 +37,13 @@ jobs:
           echo "Standard output: ${{ steps.myaction.outputs.stdout }}"
           echo "Standard error: ${{ steps.myaction.outputs.stderr }}"
 
-      - name: Use stdout in matrix
-        run: echo "Standard output: ${{ matrix.stdout }}"
-        matrix:
-          project: ${{ matrix.project }}
-          stdout: ${{ steps.myaction.outputs.stdout }}
-          
+      - name: Add values to project matrix
+        run: |
+          values=$(echo "${{ steps.myaction.outputs.stdout }}")
+          IFS=$'\n' read -rd '' -a array <<<"$values"
+          projects="[ 'test', ${array[*]} ]"
+          echo "::set-env name=PROJECTS::${projects}"
+
       # - name: Get nx command
       #   run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
 
