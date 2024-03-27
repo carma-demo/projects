@@ -6,8 +6,7 @@ export function App() {
     <div>
       <h2>
         <span> Hello there, </span>
-        Welcome to hochwasser affected with nrwl/nx-set-shas@v4 txt use outpu
-        tgh640 matrix 2 asrr split 654dwswsdwsssfsswsd 👋
+        Welcome to hochwasser 👋
       </h2>
     </div>
   );

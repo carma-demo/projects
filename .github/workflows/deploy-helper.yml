@@ -74,6 +74,78 @@ jobs:
       matrix:
         project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
 
+    # steps:
+    #   - name: Build ${{ matrix.project }}
+    #     run: echo "Building ${{ matrix.project }}..."
+
+     permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: 'pages'
+      # cancel-in-progress: true
+
     steps:
-      - name: Build ${{ matrix.project }}
-        run: echo "Building ${{ matrix.project }}..."
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: setSHAs
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Run nx command with affected projects
+        id: affected_projects
+        run: |
+          affected=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})
+          echo "::set-output name=projects::$affected"
+
+      - name: Set affected projects
+        run: |
+          affected_projects="${{ steps.affected_projects.outputs.projects }}"
+          echo "PROJECTS=$affected_projects" >> $GITHUB_ENV
+
+      - name: Build affected projects
+        run: npx nx affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+
+      - name: Read project config
+        id: read_project_config
+        run: echo "::set-output name=config::$(cat projects-config.json)"
+
+      - name: Process deploy steps
+        id: process_deploy_steps
+        run: |
+          config=$(cat projects-config.json)
+          for project in "${projects[@]}"; do
+            repoLink=$(echo "$config" | jq -r ".projects[\"$project\"].repoLink")
+            projectPath=$(echo "$config" | jq -r ".projects[\"$project\"].projectPath")
+            echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
+            echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
+            echo "- name: Deploy $project"
+            echo "  uses: peaceiris/actions-gh-pages@v3"
+            echo "  with:"
+            echo "    personal_token: ${{ secrets.KARMA_ORG }}"
+            echo "    external_repository: ${{ env.REPO_LINK }}"
+            echo "    publish_dir: ${{ env.PROJECT_PATH }}"
+          done
+
+      - name: Debug Deployment Step
+        run: |
+          echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
+          echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
+
+      - name: One more deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.KARMA_ORG }}
+          external_repository: ${{ env.REPO_LINK }}
+          publish_dir: ${{ env.PROJECT_PATH }}
+
