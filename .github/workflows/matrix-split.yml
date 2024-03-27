@@ -1,0 +1,39 @@
+name: Split NX Projects
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  split_nx_projects:
+    runs-on: ubuntu-latest
+    outputs:
+      project_list: ${{ steps.set_up_matrix.outputs.project_list }}
+
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up matrix
+        id: set_up_matrix
+        run: |
+          # Split the comma-separated string into an array
+          IFS=',' read -r -a projects <<< "${{ github.event.head_commit.message }}"
+
+          # Print each element of the array
+          for project in "${projects[@]}"
+          do
+            echo "::set-output name=project_list::$project"
+          done
+
+  build:
+    needs: split_nx_projects
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
+
+    steps:
+      - name: Build ${{ matrix.project }}
+        run: echo "Building ${{ matrix.project }}..."
