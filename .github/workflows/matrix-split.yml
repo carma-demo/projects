@@ -18,17 +18,36 @@ jobs:
       - name: Show last commit
         run: echo "The last commit is ${{ github.event.head_commit.message }}"
 
+      # - name: Set up matrix
+      #   id: set_up_matrix
+      #   run: |
+      #     # Split the comma-separated string into an array
+      #     IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
+
+      #     # Print each element of the array
+      #     for project in "${projects[@]}"
+      #     do
+      #       echo "::set-output name=project_list::$project"
+      #     done
+
       - name: Set up matrix
         id: set_up_matrix
         run: |
           # Split the comma-separated string into an array
           IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
 
-          # Print each element of the array
+          # Create a JSON array
+          json_array="["
           for project in "${projects[@]}"
           do
-            echo "::set-output name=project_list::$project"
+            json_array+="\"$project\","
           done
+          # Remove the trailing comma
+          json_array="${json_array%,}"
+          json_array+="]"
+
+          # Set output with the JSON array
+          echo "::set-output name=project_list::$json_array"
 
       - name: Show project list
         run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
