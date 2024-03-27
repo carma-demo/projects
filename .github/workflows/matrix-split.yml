@@ -53,22 +53,22 @@ jobs:
         id: set_up_matrix
         run: |
           # Split the comma-separated string into an array
-         IFS=$'\n' read -r -a projects <<< "e-auto-ladestation
-        hochwasser"
+          IFS=$'\n' read -r -a projects <<< "e-auto-ladestation
+          hochwasser"
 
-        # Create a JSON array
-        json_array="["
-        for project in "${projects[@]}"
-        do
-          # Add each project as a separate element in the JSON array
-          json_array+="\"$project\","
-        done
-        # Remove the trailing comma
-        json_array="${json_array%,}"
-        json_array+="]"
+          # Create a JSON array
+          json_array="["
+          for project in "${projects[@]}"
+          do
+            # Add each project as a separate element in the JSON array
+            json_array+="\"$project\","
+          done
+          # Remove the trailing comma
+          json_array="${json_array%,}"
+          json_array+="]"
 
-        # Set output with the JSON array
-        echo "::set-output name=project_list::$json_array"
+          # Set output with the JSON array
+          echo "::set-output name=project_list::$json_array"
 
       - name: Show project list
         run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
