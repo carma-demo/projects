@@ -52,6 +52,12 @@ jobs:
           command: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
         id: myaction
 
+      - name: Use output in subsequent steps
+        run: |
+          echo "Exit code: ${{ steps.myaction.outputs.exitCode }}"
+          echo "Standard output: ${{ steps.myaction.outputs.stdout }}"
+          echo "Standard error: ${{ steps.myaction.outputs.stderr }}"
+
       # - name: Get nx command
       #   run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
 
