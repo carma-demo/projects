@@ -34,7 +34,7 @@ jobs:
       #   npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
       #   echo "env_token=production" >> $GITHUB_OUTPUT
 
-      - name: Run nx command with affected projects
+      - name: Run color
         id: selectesed_colors
         run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
 
@@ -46,6 +46,19 @@ jobs:
       - name: Only run
         run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
 
-      - name: Run nx command to show affected projects
+      # - name: Run nx command to show affected projects
+      #   id: affected_projects
+      #   run: echo "AFFECTED_PROJECTS=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})" >> "$GITHUB_OUTPUT"
+
+      - name: Run nx command and save output to file
         id: affected_projects
-        run: echo "AFFECTED_PROJECTS=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})" >> "$GITHUB_OUTPUT"
+        run: |
+          npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }} > affected_projects.txt
+        env:
+          AFFECTED_PROJECTS_FILE: affected_projects.txt
+
+      - name: Run nx command and save output to environment variable
+        id: affected_projects
+        run: |
+          affected_projects=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})
+          echo "::set-env name=AFFECTED_PROJECTS::$affected_projects"
