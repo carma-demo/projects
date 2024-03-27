@@ -28,12 +28,6 @@ jobs:
         id: setSHAs
         uses: nrwl/nx-set-shas@v4
 
-      # - name: Run nx command with affected projects
-      #   id: affected_projects
-      #   run: |
-      #   npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
-      #   echo "env_token=production" >> $GITHUB_OUTPUT
-
       - name: Run color
         id: selectesed_colors
         run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
@@ -54,6 +48,12 @@ jobs:
 
       - name: Get nx command
         run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
+
+      - name: Workflow input stringifier
+        uses: vaibhav-sarwade-404/dynamic-input-stringifier-action@0.0.1
+        with:
+          input: '{ "OS" : "ubuntu-latest,windows-latest" , "NODE_VERSION" : "10,16" }'
+          schema: '"OS"'
 
       # - name: Run nx command to show affected projects
       #   id: affected_projects
