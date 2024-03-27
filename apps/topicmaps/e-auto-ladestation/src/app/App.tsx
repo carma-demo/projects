@@ -6,7 +6,7 @@ export function App() {
     <div>
       <h1>
         <span> Hello there, </span>
-        Welcome e-auto-ladestation txt use outpu tgh640 matrix 2 arr slpit 5 👋
+        Welcome e-auto-ladestation txt use outpu tgh640 matrix 2 arr slpit 6 👋
       </h1>
     </div>
   );

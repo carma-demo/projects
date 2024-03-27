@@ -57,8 +57,13 @@ jobs:
       - name: Split string and print words with "New string" prefix
         run: |
           text="${{ steps.myaction.outputs.stdout }}"
+          IFS=$'\n' read -r -d '' -a lines <<<"$text"
 
-          IFS=$'\n' read -r -a array <<<"$text"
+          array=()
+          for line in "${lines[@]}"; do
+              array+=("$line")
+          done
+
           for word in "${array[@]}"; do
               echo "New string $word"
           done
