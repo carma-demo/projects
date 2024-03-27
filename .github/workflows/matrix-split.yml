@@ -15,6 +15,9 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v2
 
+      - name: Show last commit
+        run: echo "The last commit is ${{ github.event.head_commit.message }}"
+
       - name: Set up matrix
         id: set_up_matrix
         run: |
@@ -27,13 +30,13 @@ jobs:
             echo "::set-output name=project_list::$project"
           done
 
-  build:
-    needs: split_nx_projects
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
+  # build:
+  #   needs: split_nx_projects
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
 
-    steps:
-      - name: Build ${{ matrix.project }}
-        run: echo "Building ${{ matrix.project }}..."
+  #   steps:
+  #     - name: Build ${{ matrix.project }}
+  #       run: echo "Building ${{ matrix.project }}..."
