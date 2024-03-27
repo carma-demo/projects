@@ -54,6 +54,17 @@ jobs:
           array=($(echo "${{ steps.myaction.outputs.stdout }}"))
           echo "${array[@]}"
 
+      - name: Split stdout into words
+        run: |
+          stdout="${{ steps.myaction.outputs.stdout }}"
+
+          # Создаем массив из слов
+          IFS=' ' read -r -a array <<<"$stdout"
+
+          for word in "${array[@]}"; do
+            echo "$word"
+          done
+
       # - name: Run nx command to show affected projects
       #   id: affected_projects
       #   run: echo "AFFECTED_PROJECTS=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})" >> "$GITHUB_OUTPUT"
