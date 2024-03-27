@@ -11,7 +11,9 @@ jobs:
 
     strategy:
       matrix:
-        project: [test]
+        project:
+          - test
+        stdout: ["${{ steps.myaction.outputs.stdout }}"]
 
     steps:
       - uses: actions/checkout@v3
@@ -57,6 +59,13 @@ jobs:
           echo "Exit code: ${{ steps.myaction.outputs.exitCode }}"
           echo "Standard output: ${{ steps.myaction.outputs.stdout }}"
           echo "Standard error: ${{ steps.myaction.outputs.stderr }}"
+
+      - name: Use stdout in matrix
+        run: echo "Standard output: $stdout"
+        env:
+          stdout: ${{ matrix.stdout }}
+        matrix:
+          project: ${{ matrix.project }}
 
       # - name: Get nx command
       #   run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
