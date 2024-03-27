@@ -1,11 +1,11 @@
 name: Split NX Projects
 
-# on:
-#   push:
-#     branches:
-#       - main
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+# on:
+#   workflow_dispatch:
 
 jobs:
   split_nx_projects:
@@ -51,35 +51,28 @@ jobs:
           # Set output with the JSON array
           echo "::set-output name=project_list::$json_array"
 
-      # - name: Set text mock
-      #   id: mocked_text
-      #   run: echo "SELECTED_COLOR=e-auto-ladestation
-      #     hochwasser" >> "$GITHUB_OUTPUT"
+      # - name: Set up matrix
+      #   id: set_up_matrix
+      #   run: |
+      #     projects="e-auto-ladestation
+      #     hochwasser"
 
-      ## e-auto-ladestation hochwasser
+      #     projects=$(perl -pe 's/^\s+//g' <<< "$projects")
 
-      - name: Set up matrix
-        id: set_up_matrix
-        run: |
-          projects="e-auto-ladestation
-          hochwasser"
+      #     IFS=$'\n' read -r -a projects_array <<< "$projects"
 
-          projects=$(perl -pe 's/^\s+//g' <<< "$projects")
+      #     json_array="["
+      #     for project in "${projects_array[@]}"
+      #     do
+      #       json_array+="\"$project\","
+      #     done
+      #     json_array="${json_array%,}"
+      #     json_array+="]"
 
-          IFS=$'\n' read -r -a projects_array <<< "$projects"
+      #     echo "::set-output name=project_list::$json_array"
 
-          json_array="["
-          for project in "${projects_array[@]}"
-          do
-            json_array+="\"$project\","
-          done
-          json_array="${json_array%,}"
-          json_array+="]"
-
-          echo "::set-output name=project_list::$json_array"
-
-      - name: Show project list
-        run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
+      # - name: Show project list
+      #   run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
 
   build:
     needs: split_nx_projects
