@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-# on:
-#   workflow_dispatch:
 
 jobs:
   split_nx_projects:
@@ -20,29 +18,25 @@ jobs:
       - name: Show last commit
         run: echo "The last commit is ${{ github.event.head_commit.message }}"
 
-      # - name: Set up matrix
-      #   id: set_up_matrix
-      #   run: |
-      #     # Split the comma-separated string into an array
-      #     IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
-
-      #     # Print each element of the array
-      #     for project in "${projects[@]}"
-      #     do
-      #       echo "::set-output name=project_list::$project"
-      #     done
-
       - name: Set up matrix
         id: set_up_matrix
         run: |
           # Split the comma-separated string into an array
           IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
+          # IFS=$'\n' read -r -a projects <<< "e-auto-ladestation
+          # hochwasser"
 
-          # Create a JSON array
+          # Create a JSON array with each word as a separate element
           json_array="["
           for project in "${projects[@]}"
           do
-            json_array+="\"$project\","
+            # Split each project into words
+            read -ra words <<< "$project"
+            # Add each word as a separate element in the JSON array
+            for word in "${words[@]}"
+            do
+              json_array+="\"$word\","
+            done
           done
           # Remove the trailing comma
           json_array="${json_array%,}"
@@ -51,28 +45,8 @@ jobs:
           # Set output with the JSON array
           echo "::set-output name=project_list::$json_array"
 
-      # - name: Set up matrix
-      #   id: set_up_matrix
-      #   run: |
-      #     projects="e-auto-ladestation
-      #     hochwasser"
-
-      #     projects=$(perl -pe 's/^\s+//g' <<< "$projects")
-
-      #     IFS=$'\n' read -r -a projects_array <<< "$projects"
-
-      #     json_array="["
-      #     for project in "${projects_array[@]}"
-      #     do
-      #       json_array+="\"$project\","
-      #     done
-      #     json_array="${json_array%,}"
-      #     json_array+="]"
-
-      #     echo "::set-output name=project_list::$json_array"
-
-      # - name: Show project list
-      #   run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
+      - name: Show project list
+        run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
 
   build:
     needs: split_nx_projects
