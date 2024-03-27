@@ -52,22 +52,21 @@ jobs:
       - name: Set up matrix
         id: set_up_matrix
         run: |
-          # Split the newline-separated string into an array
-          IFS=$'\n' read -r -a projects <<< "$(echo "e-auto-ladestation
-          hochwasser" | sed 's/^[ \t]*//')"
+          projects="e-auto-ladestation
+          hochwasser"
 
-          # Create a JSON array
+          projects=$(echo "$projects" | sed 's/^[[:space:]]*//')
+
+          IFS=$'\n' read -r -a projects_array <<< "$projects"
+
           json_array="["
-          for project in "${projects[@]}"
+          for project in "${projects_array[@]}"
           do
-            # Add each project as a separate element in the JSON array
             json_array+="\"$project\","
           done
-          # Remove the trailing comma
           json_array="${json_array%,}"
           json_array+="]"
 
-          # Set output with the JSON array
           echo "::set-output name=project_list::$json_array"
 
       - name: Show project list
