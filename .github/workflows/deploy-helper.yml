@@ -30,5 +30,6 @@ jobs:
 
       - name: Run nx command with affected projects
         id: affected_projects
-        run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
-        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+        run: |
+        npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+        echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
