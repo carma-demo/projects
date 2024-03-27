@@ -55,7 +55,7 @@ jobs:
           projects="e-auto-ladestation
           hochwasser"
 
-          projects=$(echo "$projects" | sed 's/^[[:space:]]*//')
+          projects=$(perl -pe 's/^\s+//g' <<< "$projects")
 
           IFS=$'\n' read -r -a projects_array <<< "$projects"
 
