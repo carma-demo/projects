@@ -36,4 +36,9 @@ jobs:
 
       - name: Run nx command with affected projects
         id: affected_projects
-        run: echo "env_token=production" >> $GITHUB_OUTPUT
+        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.affected_projects.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
