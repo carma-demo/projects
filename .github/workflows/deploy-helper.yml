@@ -11,8 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        project:
-          - test
+        project: [test]
 
     steps:
       - name: Setup Node.js
@@ -37,12 +36,12 @@ jobs:
           echo "Standard output: ${{ steps.myaction.outputs.stdout }}"
           echo "Standard error: ${{ steps.myaction.outputs.stderr }}"
 
-      - name: Add values to project matrix
-        run: |
-          values=$(echo "${{ steps.myaction.outputs.stdout }}")
-          IFS=$'\n' read -rd '' -a array <<<"$values"
-          projects="[ 'test', ${array[*]} ]"
-          echo "::set-env name=PROJECTS::${projects}"
+      # - name: Add values to project matrix
+      #   run: |
+      #     values=$(echo "${{ steps.myaction.outputs.stdout }}")
+      #     IFS=$'\n' read -rd '' -a array <<<"$values"
+      #     projects="[ 'test', ${array[*]} ]"
+      #     echo "::set-env name=PROJECTS::${projects}"
 
       # - name: Get nx command
       #   run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
