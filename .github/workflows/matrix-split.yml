@@ -30,6 +30,9 @@ jobs:
             echo "::set-output name=project_list::$project"
           done
 
+      - name: Show project list
+        run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
+
   # build:
   #   needs: split_nx_projects
   #   runs-on: ubuntu-latest
