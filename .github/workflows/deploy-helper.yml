@@ -1,12 +1,12 @@
 name: Deploy Helper
 
-# on:
-#   push:
-#     branches:
-#       - main
-
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+# on:
+#   workflow_dispatch:
 
 jobs:
   deploy:
@@ -49,30 +49,33 @@ jobs:
           command: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
         id: myaction
 
-      - name: Transform stdout to array
-        run: |
-          text="${{ steps.myaction.outputs.stdout }}"
-          IFS=$'\n' read -r -a lines <<<"$text"
-          array=()
-          for line in "${lines[@]}"; do
-              if [[ $line =~ New\sstring ]]; then
-                  array+=("$line")
-              fi
-          done
-          echo "${array[@]}"
+      - name: Affected string
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}"
 
-      - name: Split string and print words with "New string" prefix
-        run: |
-          text="${{ steps.myaction.outputs.stdout }}"
-          IFS=$'\n' read -r -a lines <<<"$text"
-          array=()
-          for line in "${lines[@]}"; do
-              if [[ $line =~ New\sstring ]]; then
-                  array+=("$line")
-              fi
-          done
-          for word in "${array[@]}"; do
-              echo "$word"
-          done
-        env:
-          stdout: ${{ steps.myaction.outputs.stdout }}
+      # - name: Transform stdout to array
+      #   run: |
+      #     text="${{ steps.myaction.outputs.stdout }}"
+      #     IFS=$'\n' read -r -a lines <<<"$text"
+      #     array=()
+      #     for line in "${lines[@]}"; do
+      #         if [[ $line =~ New\sstring ]]; then
+      #             array+=("$line")
+      #         fi
+      #     done
+      #     echo "${array[@]}"
+
+      # - name: Split string and print words with "New string" prefix
+      #   run: |
+      #     text="${{ steps.myaction.outputs.stdout }}"
+      #     IFS=$'\n' read -r -a lines <<<"$text"
+      #     array=()
+      #     for line in "${lines[@]}"; do
+      #         if [[ $line =~ New\sstring ]]; then
+      #             array+=("$line")
+      #         fi
+      #     done
+      #     for word in "${array[@]}"; do
+      #         echo "$word"
+      #     done
+      #   env:
+      #     stdout: ${{ steps.myaction.outputs.stdout }}
