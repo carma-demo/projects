@@ -53,7 +53,7 @@ jobs:
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}"
 
       - name: Clean affected string
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/ //g'
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed -e 's/ //g' -e 's/\n//g'
 
       # - name: Transform stdout to array
       #   run: |
