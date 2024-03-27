@@ -22,7 +22,7 @@ jobs:
         id: set_up_matrix
         run: |
           # Split the comma-separated string into an array
-          IFS=',' read -r -a projects <<< "${{ github.event.head_commit.message }}"
+          IFS=$'\t' read -r -a projects <<< "${{ github.event.head_commit.message }}"
 
           # Print each element of the array
           for project in "${projects[@]}"
