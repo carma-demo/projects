@@ -54,16 +54,16 @@ jobs:
           array=($(echo "${{ steps.myaction.outputs.stdout }}"))
           echo "${array[@]}"
 
-      - name: Split stdout into words
+      - name: Split string and print words with "New string" prefix
         run: |
-          stdout="${{ steps.myaction.outputs.stdout }}"
+          text="${{ steps.myaction.outputs.stdout }}"
 
-          # Создаем массив из слов
-          IFS=' ' read -r -a array <<<"$stdout"
-
+          IFS=$'\n' read -r -a array <<<"$text"
           for word in "${array[@]}"; do
-            echo "$word"
+              echo "New string $word"
           done
+        env:
+          stdout: ${{ steps.myaction.outputs.stdout }}
 
       # - name: Run nx command to show affected projects
       #   id: affected_projects
