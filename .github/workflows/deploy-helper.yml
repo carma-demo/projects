@@ -9,12 +9,10 @@ on:
 #   workflow_dispatch:
 
 jobs:
-  deploy:
+  split_nx_projects:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        project: [test]
+    outputs:
+      project_list: ${{ steps.set_up_matrix.outputs.project_list }}
 
     steps:
       - uses: actions/checkout@v3
@@ -52,17 +50,17 @@ jobs:
       - name: Affected string
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}"
 
-      - name: Clean affected string
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/\t\r\n/,/g'
+      # - name: Clean affected string
+      #   run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/\t\r\n/,/g'
 
-      - name: Clean affected second
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/ \+/ /g'
+      # - name: Clean affected second
+      #   run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/ \+/ /g'
 
       - name: Clean affected firs tr
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' '
 
-      - name: Clean affected second tr
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ','
+      # - name: Clean affected second tr
+      #   run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ','
 
       # - name: Transform stdout to array
       #   run: |
