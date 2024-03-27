@@ -57,7 +57,7 @@ jobs:
       - name: Split string and print words with "New string" prefix
         run: |
           text="${{ steps.myaction.outputs.stdout }}"
-          IFS=$'\n' read -r -d '' -a lines <<<"$text"
+          IFS=$'\n' read -r -a lines <<<"$text"
 
           array=()
           for line in "${lines[@]}"; do
