@@ -53,7 +53,7 @@ jobs:
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}"
 
       - name: Clean affected string
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr -d "[:space:]"
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/\t\r\n/ /g'
 
       # - name: Transform stdout to array
       #   run: |
