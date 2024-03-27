@@ -16,10 +16,6 @@ jobs:
         stdout: ["${{ steps.myaction.outputs.stdout }}"]
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
 
@@ -29,24 +25,6 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: setSHAs
         uses: nrwl/nx-set-shas@v4
-
-      # - name: Run nx command with affected projects
-      #   id: affected_projects
-      #   run: |
-      #   npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
-      #   echo "env_token=production" >> $GITHUB_OUTPUT
-
-      - name: Run color
-        id: selectesed_colors
-        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
-
-      - name: Get color
-        env:
-          SELECTED_COLOR: ${{ steps.selectesed_colors.outputs.SELECTED_COLOR }}
-        run: echo "The selected color is $SELECTED_COLOR"
-
-      - name: Only run
-        run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
 
       - name: Run nx command to show affected projects
         uses: gh640/command-result-action@v1
@@ -61,12 +39,11 @@ jobs:
           echo "Standard error: ${{ steps.myaction.outputs.stderr }}"
 
       - name: Use stdout in matrix
-        run: echo "Standard output: $stdout"
-        env:
-          stdout: ${{ matrix.stdout }}
+        run: echo "Standard output: ${{ matrix.stdout }}"
         matrix:
           project: ${{ matrix.project }}
-
+          stdout: ${{ steps.myaction.outputs.stdout }}
+          
       # - name: Get nx command
       #   run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
 
