@@ -49,11 +49,10 @@ jobs:
       - name: Get nx command
         run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
 
-      - name: Workflow input stringifier
-        uses: vaibhav-sarwade-404/dynamic-input-stringifier-action@0.0.1
-        with:
-          input: '{ "OS" : "ubuntu-latest,windows-latest" , "NODE_VERSION" : "10,16" }'
-          schema: '"OS"'
+      - name: Transform stdout to array
+        run: |
+          array=($(echo "${{ steps.myaction.outputs.stdout }}"))
+          echo "${array[@]}"
 
       # - name: Run nx command to show affected projects
       #   id: affected_projects
