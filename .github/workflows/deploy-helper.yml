@@ -1,12 +1,12 @@
 name: Deploy Helper
 
-# on:
-#   push:
-#     branches:
-#       - main
-
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+# on:
+#   workflow_dispatch:
 
 jobs:
   split_nx_projects:
@@ -59,33 +59,23 @@ jobs:
       - name: Clean affected firs tr
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' '
 
-      # - name: Clean affected second tr
-      #   run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ','
+    - name: Set up matrix
+        id: set_up_matrix
+        run: |
+          cleaned_output=$(echo "${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' ')
 
-      # - name: Transform stdout to array
-      #   run: |
-      #     text="${{ steps.myaction.outputs.stdout }}"
-      #     IFS=$'\n' read -r -a lines <<<"$text"
-      #     array=()
-      #     for line in "${lines[@]}"; do
-      #         if [[ $line =~ New\sstring ]]; then
-      #             array+=("$line")
-      #         fi
-      #     done
-      #     echo "${array[@]}"
+          IFS=' ' read -r -a words <<< "$cleaned_output"
 
-      # - name: Split string and print words with "New string" prefix
-      #   run: |
-      #     text="${{ steps.myaction.outputs.stdout }}"
-      #     IFS=$'\n' read -r -a lines <<<"$text"
-      #     array=()
-      #     for line in "${lines[@]}"; do
-      #         if [[ $line =~ New\sstring ]]; then
-      #             array+=("$line")
-      #         fi
-      #     done
-      #     for word in "${array[@]}"; do
-      #         echo "$word"
-      #     done
-      #   env:
-      #     stdout: ${{ steps.myaction.outputs.stdout }}
+          json_array="["
+          for word in "${words[@]}"
+          do
+            json_array+="\"$word\","
+          done
+          # Удаление завершающей запятой
+          json_array="${json_array%,}"
+          json_array+="]"
+
+          echo "::set-output name=project_list::$json_array"
+
+      - name: Show project list
+        run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
