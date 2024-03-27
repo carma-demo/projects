@@ -46,43 +46,30 @@ jobs:
           command: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
         id: myaction
 
-      - name: Get nx command
-        run: echo "The selected color is ${{ steps.myaction.outputs.stdout*/ }}"
+      - name: Transform stdout to array
+        run: |
+          text="${{ steps.myaction.outputs.stdout }}"
+          IFS=$'\n' read -r -a lines <<<"$text"
+          array=()
+          for line in "${lines[@]}"; do
+              if [[ $line =~ New\sstring ]]; then
+                  array+=("$line")
+              fi
+          done
+          echo "${array[@]}"
 
-      # - name: Transform stdout to array
-      #   run: |
-      #     array=($(echo "${{ steps.myaction.outputs.stdout }}"))
-      #     echo "${array[@]}"
-
-      # - name: Split string and print words with "New string" prefix
-      #   run: |
-      #     text="${{ steps.myaction.outputs.stdout }}"
-      #     IFS=$'\n' read -r -a lines <<<"$text"
-
-      #     array=()
-      #     for line in "${lines[@]}"; do
-      #         array+=("$line")
-      #     done
-
-      #     for word in "${array[@]}"; do
-      #         echo "New string $word"
-      #     done
-      #   env:
-      #     stdout: ${{ steps.myaction.outputs.stdout }}
-
-      # - name: Run nx command to show affected projects
-      #   id: affected_projects
-      #   run: echo "AFFECTED_PROJECTS=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})" >> "$GITHUB_OUTPUT"
-
-      # - name: Run nx command and save output to file
-      #   id: affected_projects
-      #   run: |
-      #     npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }} > affected_projects.txt
-      #   env:
-      #     AFFECTED_PROJECTS_FILE: affected_projects.txt
-
-      # - name: Run nx command and save output to environment variable
-      #   id: affected_projects_file
-      #   run: |
-      #     affected_projects=$(npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }})
-      #     echo "::set-env name=AFFECTED_PROJECTS::$affected_projects"
+      - name: Split string and print words with "New string" prefix
+        run: |
+          text="${{ steps.myaction.outputs.stdout }}"
+          IFS=$'\n' read -r -a lines <<<"$text"
+          array=()
+          for line in "${lines[@]}"; do
+              if [[ $line =~ New\sstring ]]; then
+                  array+=("$line")
+              fi
+          done
+          for word in "${array[@]}"; do
+              echo "$word"
+          done
+        env:
+          stdout: ${{ steps.myaction.outputs.stdout }}
