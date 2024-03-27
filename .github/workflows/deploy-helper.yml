@@ -47,28 +47,28 @@ jobs:
         id: myaction
 
       - name: Get nx command
-        run: echo "The selected color is ${{ steps.myaction.outputs.stdout }}"
+        run: echo "The selected color is ${{ steps.myaction.outputs.stdout*/ }}"
 
-      - name: Transform stdout to array
-        run: |
-          array=($(echo "${{ steps.myaction.outputs.stdout }}"))
-          echo "${array[@]}"
+      # - name: Transform stdout to array
+      #   run: |
+      #     array=($(echo "${{ steps.myaction.outputs.stdout }}"))
+      #     echo "${array[@]}"
 
-      - name: Split string and print words with "New string" prefix
-        run: |
-          text="${{ steps.myaction.outputs.stdout }}"
-          IFS=$'\n' read -r -a lines <<<"$text"
+      # - name: Split string and print words with "New string" prefix
+      #   run: |
+      #     text="${{ steps.myaction.outputs.stdout }}"
+      #     IFS=$'\n' read -r -a lines <<<"$text"
 
-          array=()
-          for line in "${lines[@]}"; do
-              array+=("$line")
-          done
+      #     array=()
+      #     for line in "${lines[@]}"; do
+      #         array+=("$line")
+      #     done
 
-          for word in "${array[@]}"; do
-              echo "New string $word"
-          done
-        env:
-          stdout: ${{ steps.myaction.outputs.stdout }}
+      #     for word in "${array[@]}"; do
+      #         echo "New string $word"
+      #     done
+      #   env:
+      #     stdout: ${{ steps.myaction.outputs.stdout }}
 
       # - name: Run nx command to show affected projects
       #   id: affected_projects
