@@ -59,7 +59,7 @@ jobs:
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/ \+/ /g'
 
       - name: Clean affected firs tr
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' '  '
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' '
 
       - name: Clean affected second tr
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ','
