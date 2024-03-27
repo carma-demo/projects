@@ -55,6 +55,15 @@ jobs:
       - name: Clean affected string
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/\t\r\n/,/g'
 
+      - name: Clean affected second
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | sed 's/ \+/ /g'
+
+      - name: Clean affected firs tr
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' '  '
+
+      - name: Clean affected second tr
+        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ','
+
       # - name: Transform stdout to array
       #   run: |
       #     text="${{ steps.myaction.outputs.stdout }}"
