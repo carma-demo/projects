@@ -94,9 +94,8 @@ jobs:
         project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
     concurrency:
       group: 'pages'
-      # cancel-in-progress: true
 
-    # Start here
+    if: steps.show_affected_string.outputs.stdout != ''
     steps:
       - uses: actions/checkout@v3
         with:
