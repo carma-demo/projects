@@ -7,10 +7,10 @@
     "e-auto-ladestation": {
       "repoLink": "carma-demo/topic-e-auto-ladestation",
       "projectPath": "./dist/apps/topicmaps/e-auto-ladestation"
+    },
+    "kita-finder": {
+      "repoLink": "carma-demo/kita-finder",
+      "projectPath": "./dist/apps/topicmaps/kita-finder"
     }
-  },
-  "kita-finder": {
-    "repoLink": "carma-demo/kita-finder",
-    "projectPath": "./dist/apps/topicmaps/kita-finder"
   }
 }
