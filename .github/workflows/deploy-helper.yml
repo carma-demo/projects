@@ -19,6 +19,9 @@ jobs:
       pages: write
       id-token: write
 
+    concurrency:
+      group: 'pages'
+
     steps:
       - uses: actions/checkout@v3
         with:
