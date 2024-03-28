@@ -21,8 +21,8 @@ jobs:
       pages: write
       id-token: write
 
-    concurrency:
-      group: 'pages'
+    # concurrency:
+    #   group: 'pages'
 
     steps:
       - uses: actions/checkout@v3
@@ -96,6 +96,8 @@ jobs:
         project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
     concurrency:
       group: 'pages'
+      cancel-in-progress: false
+      cancel-pending: false
 
     steps:
       - uses: actions/checkout@v3
