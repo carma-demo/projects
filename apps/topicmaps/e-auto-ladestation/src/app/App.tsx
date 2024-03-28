@@ -6,7 +6,7 @@ function App() {
     <div>
       <h1>
         <span> Hello there, </span>
-        Welcome e-auto-ladestation demo 3.0! 👋
+        Welcome e-auto-ladestation demo 3.0!! 👋
       </h1>
     </div>
   );

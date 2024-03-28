@@ -97,7 +97,6 @@ jobs:
     concurrency:
       group: 'pages'
       cancel-in-progress: false
-      cancel-pending: false
 
     steps:
       - uses: actions/checkout@v3
