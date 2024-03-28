@@ -36,8 +36,7 @@ jobs:
 
       - name: Set Directory as Safe
         run: |
-          git config --system --add safe.directory "$GITHUB_WORKSPACE"
-        shell: bash
+          git config --local --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: setSHAs
