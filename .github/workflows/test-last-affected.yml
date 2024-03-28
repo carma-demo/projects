@@ -117,7 +117,7 @@ jobs:
         run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
 
       - name: Build app
-        run: npx nx run-many --target=build --projects=e-auto-ladestation,hochwasser
+        run: npx nx affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
         shell: bash
 
       - name: Read project config
