@@ -95,7 +95,7 @@ jobs:
     concurrency:
       group: 'pages'
 
-    if: steps.myaction.outputs.stdout != ''
+    if: ${{ steps.myaction.outputs.stdout != '' }}
 
     steps:
       - uses: actions/checkout@v3
