@@ -56,11 +56,11 @@ jobs:
           command: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
         id: myaction
 
-      - name: Show affected string
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}"
+      # - name: Show affected string
+      #   run: echo "Affected string ${{ steps.myaction.outputs.stdout }}"
 
-      - name: Clean affected string
-        run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' '
+      # - name: Clean affected string
+      #   run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' '
 
       - name: Set up matrix
         if: steps.myaction.outputs.stdout != ''
