@@ -96,6 +96,7 @@ jobs:
       group: 'pages'
 
     if: steps.show_affected_string.outputs.stdout != ''
+
     steps:
       - uses: actions/checkout@v3
         with:
