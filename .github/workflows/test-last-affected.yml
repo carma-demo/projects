@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       project_list: ${{ steps.set_up_matrix.outputs.project_list }}
+      is_affected: ${{ steps.myaction.outputs.stdout != '' }}
 
     permissions:
       contents: read
@@ -85,6 +86,7 @@ jobs:
   build:
     needs: split_nx_projects
     runs-on: ubuntu-latest
+    if: ${{ needs.split_nx_projects.outputs.is_affected == 'true' }}
     permissions:
       contents: read
       pages: write
@@ -94,8 +96,6 @@ jobs:
         project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
     concurrency:
       group: 'pages'
-
-    if: ${{ steps.myaction.outputs.stdout != '' }}
 
     steps:
       - uses: actions/checkout@v3
