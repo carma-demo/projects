@@ -114,8 +114,8 @@ jobs:
           echo "BASE: ${{ steps.setSHAs.outputs.base }}"
           echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
 
-      - name: Run nx command with affected projects
-        run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+      # - name: Run nx command with affected projects
+      #   run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
 
       - name: Build app
         run: npx nx affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
@@ -134,21 +134,21 @@ jobs:
           projectPath=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].projectPath')
           echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
           echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
-          echo "- name: Deploy ${{ matrix.project }}"
-          echo "  uses: peaceiris/actions-gh-pages@v3"
-          echo "  with:"
-          echo "    personal_token: ${{ secrets.KARMA_ORG }}"
-          echo "    external_repository: ${{ env.REPO_LINK }}"
+          # echo "- name: Deploy ${{ matrix.project }}"
+          # echo "  uses: peaceiris/actions-gh-pages@v3"
+          # echo "  with:"
+          # echo "    personal_token: ${{ secrets.KARMA_ORG }}"
+          # echo "    external_repository: ${{ env.REPO_LINK }}"
           echo "    publish_dir: ${{ env.PROJECT_PATH }}"
         shell: bash
 
-      - name: Debug Deployment Step
+      - name: Debug deployment variables
         run: |
           echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
           echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
         shell: bash
 
-      - name: One more deploy
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.KARMA_ORG }}
