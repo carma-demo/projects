@@ -62,6 +62,7 @@ jobs:
         run: echo "Affected string ${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' '
 
       - name: Set up matrix
+        if: steps.myaction.outputs.stdout != ''
         id: set_up_matrix
         run: |
           cleaned_output=$(echo "${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' ')
