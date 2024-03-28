@@ -38,8 +38,8 @@ jobs:
         uses: nrwl/nx-set-shas@v4
 
       - run: |
-        echo "BASE: ${{ steps.setSHAs.outputs.base }}"
-        echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
+          echo "BASE: ${{ steps.setSHAs.outputs.base }}"
+          echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
 
       - name: Only run nx with affected projects
         run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
