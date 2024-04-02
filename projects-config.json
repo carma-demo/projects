@@ -31,6 +31,10 @@
     "stadtplan": {
       "repoLink": "carma-demo/topic-stadtplan",
       "projectPath": "./dist/apps/topicmaps/stadtplan"
+    },
+    "potenzialflaechen-online": {
+      "repoLink": "carma-demo/potenzialflaechen-online",
+      "projectPath": "./dist/apps/wunda/potenzialflaechen"
     }
   }
 }
