@@ -19,6 +19,10 @@
     "ehrenamtskarte": {
       "repoLink": "carma-demo/ehrenamtskarte",
       "projectPath": "./dist/apps/topicmaps/ehrenamtskarte"
+    },
+    "klimaorte": {
+      "repoLink": "carma-demo/klimaorte",
+      "projectPath": "./dist/apps/topicmaps/klimaorte"
     }
   }
 }
