@@ -1,0 +1,130 @@
+name: Final Demo Deploy
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+on:
+  workflow_dispatch:
+
+jobs:
+  split_nx_projects:
+    runs-on: ubuntu-latest
+    outputs:
+      project_list: ${{ steps.set_up_matrix.outputs.project_list }}
+      is_affected: ${{ steps.myaction.outputs.stdout != '' }}
+
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set Directory as Safe
+        run: |
+          git config --local --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: setSHAs
+        uses: nrwl/nx-set-shas@v4
+
+      - run: |
+          echo "BASE: ${{ steps.setSHAs.outputs.base }}"
+          echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
+
+      - name: Run nx command to show affected projects
+        uses: gh640/command-result-action@v1
+        with:
+          command: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
+        id: myaction
+
+      - name: Set up matrix
+        if: steps.myaction.outputs.stdout != ''
+        id: set_up_matrix
+        run: |
+          cleaned_output=$(echo "${{ steps.myaction.outputs.stdout }}" | tr '\t\n' ' ')
+
+          IFS=' ' read -r -a words <<< "$cleaned_output"
+
+          json_array="["
+          for word in "${words[@]}"
+          do
+            json_array+="\"$word\","
+          done
+          json_array="${json_array%,}"
+          json_array+="]"
+
+          echo "::set-output name=project_list::$json_array"
+
+      - name: Show project list
+        run: echo "The project list is ${{ steps.set_up_matrix.outputs.project_list }}"
+
+  build:
+    needs: split_nx_projects
+    runs-on: ubuntu-latest
+    if: ${{ needs.split_nx_projects.outputs.is_affected == 'true' }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    strategy:
+      matrix:
+        project: ${{fromJson(needs.split_nx_projects.outputs.project_list)}}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install
+        run: npm install
+        shell: bash
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: setSHAs
+        uses: nrwl/nx-set-shas@v4
+
+      - run: |
+          echo "BASE: ${{ steps.setSHAs.outputs.base }}"
+          echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
+
+      - name: Build project
+        run: npx nx run ${{ matrix.project }}:build
+
+      - name: Read project config
+        id: read_project_config
+        run: echo "::set-output name=config::$(cat projects-config.json)"
+        shell: bash
+
+      - name: Process deploy steps
+        id: process_deploy_steps
+        run: |
+          config=$(cat projects-config.json)
+          repoLink=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].repoLink')
+          projectPath=$(echo "$config" | jq -r '.projects["'"${{ matrix.project }}"'"].projectPath')
+          echo "REPO_LINK=${repoLink}" >> $GITHUB_ENV
+          echo "PROJECT_PATH=${projectPath}" >> $GITHUB_ENV
+          echo "    publish_dir: ${{ env.PROJECT_PATH }}"
+        shell: bash
+
+      - name: Debug deployment variables
+        run: |
+          echo "DEBUG: repoLink = ${{ env.REPO_LINK }}"
+          echo "DEBUG: projectPath = ${{ env.PROJECT_PATH }}"
+        shell: bash
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.KARMA_ORG }}
+          external_repository: ${{ env.REPO_LINK }}
+          publish_dir: ${{ env.PROJECT_PATH }}
