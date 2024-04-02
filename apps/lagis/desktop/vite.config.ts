@@ -5,6 +5,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
   root: __dirname,
+  base: 'https://carma-demo.github.io/lagis-desktop/',
   cacheDir: '../../../node_modules/.vite/apps/lagis/desktop',
 
   server: {

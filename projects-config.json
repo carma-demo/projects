@@ -11,6 +11,10 @@
     "kita-finder": {
       "repoLink": "carma-demo/kita-finder",
       "projectPath": "./dist/apps/topicmaps/kita-finder"
+    },
+    "lagis-desktop": {
+      "repoLink": "carma-demo/lagis-desktop",
+      "projectPath": "./dist/apps/lagis/desktop"
     }
   }
 }
