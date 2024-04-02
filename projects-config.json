@@ -23,6 +23,10 @@
     "klimaorte": {
       "repoLink": "carma-demo/klimaorte",
       "projectPath": "./dist/apps/topicmaps/klimaorte"
+    },
+    "luftmessstationen": {
+      "repoLink": "carma-demo/luftmessstationen",
+      "projectPath": "./dist/apps/topicmaps/luftmessstationen"
     }
   }
 }
