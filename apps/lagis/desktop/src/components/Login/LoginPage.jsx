@@ -93,7 +93,7 @@ const LoginPage = () => {
             </div>
             <div className="absolute bottom-6 right-6 text-white/80 font-semibold flex flex-col gap-2 items-end">
               <span>
-                LagIS Desktop v:{packageJson?.version}{' '}
+                LagIS Desktop Demo v:{packageJson?.version}{' '}
                 <a
                   href="https://cismet.de"
                   className="text-white/50 no-underline"
