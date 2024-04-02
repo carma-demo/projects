@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     getPOIColors(setPoiColors);
-    document.title = 'Kita-Finder Wuppertal Demo 3.11 build';
+    document.title = 'Kita-Finder Wuppertal Demo 4';
   }, []);
   if (poiColors) {
     return (
