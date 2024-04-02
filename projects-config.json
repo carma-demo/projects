@@ -29,7 +29,7 @@
       "projectPath": "./dist/apps/topicmaps/luftmessstationen"
     },
     "stadtplan": {
-      "repoLink": "carma-demo/topic-stadtplan",
+      "repoLink": "carma-demo/stadtplan",
       "projectPath": "./dist/apps/topicmaps/stadtplan"
     },
     "potenzialflaechen-online": {
