@@ -5,6 +5,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
   root: __dirname,
+  base: 'https://carma-demo.github.io/topic-stadtplan/',
   cacheDir: '../../../node_modules/.vite/apps/topicmaps/stadtplan',
 
   server: {

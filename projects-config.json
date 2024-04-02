@@ -27,6 +27,10 @@
     "luftmessstationen": {
       "repoLink": "carma-demo/luftmessstationen",
       "projectPath": "./dist/apps/topicmaps/luftmessstationen"
+    },
+    "stadtplan": {
+      "repoLink": "carma-demo/topic-stadtplan",
+      "projectPath": "./dist/apps/topicmaps/stadtplan"
     }
   }
 }
