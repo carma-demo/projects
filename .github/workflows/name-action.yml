@@ -1,6 +1,7 @@
 name: Deployment
 
-run-name: My Custom Run Name
+# run-name: My Custom Run Name
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:

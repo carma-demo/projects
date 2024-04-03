@@ -32,8 +32,8 @@ jobs:
       # - name: Setup Node.js
       #   uses: actions/setup-node@v3
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
       - name: Set Directory as Safe
         run: |
@@ -103,26 +103,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Install
-      #   run: npm install
-      #   shell: bash
+      - name: Install
+        run: npm install
+        shell: bash
 
-      # - name: Derive appropriate SHAs for base and head for `nx affected` commands
-      #   id: setSHAs
-      #   uses: nrwl/nx-set-shas@v4
-
-      # - run: |
-      #     echo "BASE: ${{ steps.setSHAs.outputs.base }}"
-      #     echo "HEAD: ${{ steps.setSHAs.outputs.head }}"
-
-      # - name: Run nx command with affected projects
-      #   run: npx nx show projects --affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
-
-      # - name: Build app
-      #   run: npx nx affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
-      #   shell: bash
-      - name: Install Nx
-        run: npm install nx@17.2.8
+      # - name: Install Nx
+      #   run: npm install nx@17.2.8
 
       - name: Build project
         run: npx nx run ${{ matrix.project }}:build
