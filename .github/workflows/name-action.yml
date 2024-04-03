@@ -1,12 +1,13 @@
 name: Deployment
 
-run-name: Deploy to ${{ inputs.deploy_target || 'Default Target' }} by @${{ github.actor }}
+# run-name: Deploy to ${{ inputs.deploy_target || 'Default Target' }} by @${{ github.actor }}
+run-name: ${{ inputs.deploy_target || 'Deployment' }}
 
 on:
   workflow_dispatch:
     inputs:
       deploy_target:
-        description: 'Custom value'
+        description: 'Please enter a proper Action Name (Default=Deployment)'
         required: false
 
   push:
