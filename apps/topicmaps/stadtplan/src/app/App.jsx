@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     getPOIColors(setPoiColors);
-    document.title = 'Online-Stadtplan Wuppertal demo';
+    document.title = 'Online-Stadtplan Wuppertal';
   }, []);
   if (poiColors) {
     return (

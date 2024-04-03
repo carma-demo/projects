@@ -121,6 +121,8 @@ jobs:
       # - name: Build app
       #   run: npx nx affected -t build --base=${{ steps.setSHAs.outputs.base }} --head=${{ steps.setSHAs.outputs.head }}
       #   shell: bash
+      - name: Install Nx
+        run: npm install nx@17.2.8
 
       - name: Build project
         run: npx nx run ${{ matrix.project }}:build
