@@ -5,10 +5,14 @@ run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
-  #   inputs:
-  #         action-name:
-  #           description: "Please enter a proper Action Name (Default=Deployment)"
-  #           required: false
+    #   inputs:
+    #         action-name:
+    #           description: "Please enter a proper Action Name (Default=Deployment)"
+    #           required: false
+    inputs:
+      deploy_target:
+        description: 'Custom value'
+        required: false
 
   push:
     branches:
