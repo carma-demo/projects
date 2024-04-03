@@ -1,9 +1,6 @@
 name: Deployment
 
-run-name: |
-  Deploy to ${
-    { inputs.deploy_target || 'Default Target' }
-  } by @${{ github.actor }}
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
@@ -24,3 +21,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Show input
+        run: echo "Deploy to ${{ inputs.deploy_target }}"
