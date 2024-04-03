@@ -1,6 +1,6 @@
 name: Deployment
 
-run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+run-name: Deploy to ${{ inputs.deploy_target || 'Default Target' }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
