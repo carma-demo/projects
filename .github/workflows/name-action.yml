@@ -1,13 +1,13 @@
 name: Deployment
 
+run-name: My Custom Run Name
+
 on:
   workflow_dispatch:
   #   inputs:
   #         action-name:
   #           description: "Please enter a proper Action Name (Default=Deployment)"
   #           required: false
-
-  run-name: My Custom Run Name
 
   push:
     branches:
@@ -16,15 +16,6 @@ on:
 jobs:
   split_nx_projects:
     runs-on: ubuntu-latest
-    # outputs:
-    #   project_list: ${{ steps.set_up_matrix.outputs.project_list }}
-    #   is_affected: ${{ steps.myaction.outputs.stdout != '' }}
-
-    # permissions:
-    #   contents: read
-    #   actions: read
-    #   pages: write
-    #   id-token: write
 
     steps:
       - uses: actions/checkout@v3
